@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fceecf;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e3ba79;
+  padding: 10px 20px;
+  border-bottom: 4px solid #a8773b;
+}
+
+.menu-esquerda span {
+  margin-left: 15px;
+  font-weight: bold;
+  color: #4d3c00;
+}
+
+.menu-direita img {
+  width: 32px;
+  margin-left: 10px;
+}
+
+.botao-pause {
+  background: #c0392b;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.conteudo {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #804000;
+  margin-bottom: 30px;
+}
+
+.grid-relatorio {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+}
+
+.cidade {
+  background-color: #f6e1b3;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cidade h2 {
+  margin-top: 0;
+  color: #5e3f1a;
+}
+
+.cidade p {
+  margin: 5px 0;
+  font-weight: bold;
+  color: #4b4b4b;
+}
+
+.total {
+  color: #a8773b;
+  font-size: 18px;
+}
+
+.total span {
+  font-weight: bold;
+}
+
+.total-geral {
+  font-size: 22px;
+  font-weight: bold;
+  background-color: #f0d99b;
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: 12px;
+  color: #7a5400;
+}

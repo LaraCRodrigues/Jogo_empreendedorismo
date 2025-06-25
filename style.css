@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #d9af6b; /* tom bege */
+}
+
+.tela-inicial {
+  width: 100%;
+  height: 100vh;
+  background: #e2bb7f;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.logo {
+  position: relative;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.escudo {
+  width: 700px;
+  max-width: 100%;
+  z-index: 0;
+}
+
+.logo h1 {
+  font-size: 60px;
+  color: #ffc400;
+  text-shadow: 2px 2px #884400;
+  z-index: 1;
+  position: relative;
+  margin-top: 40px;
+}
+
+.saga {
+  display: block;
+  font-size: 32px;
+  color: #a42800;
+}
+
+.heroi {
+  font-weight: bold;
+}
+
+.botoes {
+  text-align: center;
+}
+
+.botao {
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.vermelho {
+  background-color: #c0392b;
+  color: white;
+  border: 3px solid #8b2a1d;
+}
+
+.azul {
+  background-color: #3498db;
+  color: white;
+  border: 3px solid #1c669b;
+}
+
+.botoes-inferiores {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 40px;
+}
+

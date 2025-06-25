@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Batalha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/fases.css" />
+</head>
+
+<body>
+    <div class="tela-jogo">
+        <div class="area-batalha">
+            <div class="vida-container vida-esquerda">
+                Jogador
+                <div class="barra-vida">
+                    <div class="preenchimento-vida" id="barra-vida-jogador" style="width: 100%"></div>
+                </div>
+                <div id="vida-jogador-texto">35 / 35</div>
+            </div>
+
+            <div class="personagem jogador"></div>
+
+            <button class="botao-pausar">Pausar</button>
+
+            <div class="personagem inimigo"></div>
+
+            <div class="vida-container vida-direita">
+                Inimigo
+                <div class="barra-vida">
+                    <div class="preenchimento-vida" style="width: 100%"></div>
+                </div>
+                <div>11 / 16</div>
+            </div>
+        </div>
+
+        <!-- modal de pausa -->
+        <div id="modal-pausa" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+                <h2 class="text-xl font-bold mb-4">Jogo Pausado</h2>
+                <p class="mb-6">Clique em continuar para voltar ao jogo.</p>
+                <button onclick="continuarJogo()"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Continuar
+                </button>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4">
+            <button onclick="atacar()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                Atacar
+            </button>
+        </div>
+        <div class="w-full bg-gray-700 h-6 relative my-6 cursor-pointer" onclick="verificarAcerto()"
+            id="barra-precisao">
+            <!-- Área de acerto perfeita -->
+            <div class="absolute top-0 h-full bg-green-500" style="left: 45%; width: 10%;"></div>
+            <!-- Indicador de clique -->
+            <div class="absolute top-0 h-full w-1 bg-red-500" id="indicador-clique" style="left: 0%;"></div>
+        </div>
+
+
+        <!-- 
+
+        <div class="rodape">
+            <div class="text-white mb-2 font-bold">Acertos Consecutivos</div>
+            <div class="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+                <div id="barra-acerto" class="bg-green-400 h-full" style="width: 50%"></div>
+            </div>
+            <div class="text-sm text-white mt-1">5 de 10</div>
+        </div>
+        <div class="flex justify-center bg-[#2e2e2e] py-4">
+            <button onclick="atacar()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                Atacar
+            </button>
+        </div> -->
+    </div>
+    <script>
+        let jogoPausado = false;
+        let vidaJogador = 35;
+        let vidaInimigo = 35;
+        let acertosConsecutivos = 0;
+        const totalAcertos = 10;
+
+        function atualizarVida() {
+            const vidaInimigoPorcentagem = (vidaInimigo / 35) * 100;
+            document.querySelector(".vida-direita .preenchimento-vida").style.width = vidaInimigoPorcentagem + "%";
+            document.querySelector(".vida-direita div:last-child").textContent = `${vidaInimigo} / 35`;
+        }
+
+        function atualizarBarraAcertos() {
+            const porcentagem = (acertosConsecutivos / totalAcertos) * 100;
+            document.getElementById("barra-acerto").style.width = porcentagem + "%";
+            document.querySelector(".rodape .text-sm").textContent = `${acertosConsecutivos} de ${totalAcertos}`;
+        }
+
+        function atacar() {
+            if (jogoPausado || vidaInimigo <= 0) return;
+
+            const indicador = document.getElementById("indicador-clique");
+            const left = parseFloat(indicador.style.left); // exemplo: "50%" → 50
+            const posicao = left / 100;
+
+            if (posicao >= 0.45 && posicao <= 0.55) {
+                let dano = Math.random() < 0.2 ? 10 : 5;
+                vidaInimigo -= dano;
+                if (vidaInimigo < 0) vidaInimigo = 0;
+
+                acertosConsecutivos++;
+                atualizarVida();
+                atualizarBarraAcertos();
+
+                alert(dano === 10 ? "Acerto Crítico!" : "Acerto Normal!");
+
+                if (vidaInimigo <= 0) alert("Inimigo derrotado!");
+            } else {
+                acertosConsecutivos = 0;
+                atualizarBarraAcertos();
+                alert("Errou o tempo!");
+            }
+        }
+
+        // Indicador automático
+        let indicador = document.getElementById("indicador-clique");
+        let direcao = 1;
+        let posicao = 0;
+
+        setInterval(() => {
+            if (jogoPausado || vidaInimigo <= 0) return;
+            posicao += direcao * 0.005;
+            if (posicao >= 1 || posicao <= 0) direcao *= -1;
+            indicador.style.left = `${(posicao * 100).toFixed(2)}%`;
+        }, 10);
+
+        function pausarJogo() {
+            jogoPausado = true;
+            document.getElementById("modal-pausa").classList.remove("hidden");
+        }
+
+        function continuarJogo() {
+            jogoPausado = false;
+            document.getElementById("modal-pausa").classList.add("hidden");
+        }
+    </script>
+    <script src="js/pausar.js"></script>
+</body>
+
+</html>

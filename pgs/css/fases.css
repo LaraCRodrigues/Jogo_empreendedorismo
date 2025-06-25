@@ -1,0 +1,164 @@
+/* body {
+  margin: 0;
+  padding: 0;
+  background-color: #87c96f;
+  font-family: sans-serif;
+}
+
+#fase {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: url('imgs/fase-fundo.png') center/cover no-repeat;
+}
+
+#boneco {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url('imgs/boneco.png') center/cover no-repeat;
+  top: 200px;
+  left: 100px;
+}
+
+.inimigo {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url('/imgs/npcs/5.png') center/cover no-repeat;
+}
+.inimigo1 {
+  top: 100px;
+  left: 300px;
+}
+
+
+
+#personagem {
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  background: url('/imgs/npcs/') left center;
+  background-size: cover;
+  image-rendering: pixelated; 
+}
+
+.andar-baixo {
+  background-image: url('/imgs/sprite-andar-baixo.png');
+  animation: andar 0.8s steps(4) infinite;
+}
+.parado {
+  animation: none;
+  background-image: url('/imgs/npcs/6.png');
+  background-position: center;
+}
+
+@keyframes andar {
+  100% {
+    background-position: -192px 0; 
+  }
+} */
+
+
+ html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #2e2e2e;
+            font-family: sans-serif;
+        }
+
+        .tela-jogo {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .area-batalha {
+            flex: 1;
+            background: linear-gradient(to bottom, #3a6d4a 60%, #1e4023 60%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: relative;
+        }
+
+        .personagem {
+            width: 500px;
+            height: 228px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .jogador {
+            background-image: url('/imgs/npcs/5.png');
+        }
+
+        .inimigo {
+            background-image: url('/imgs/npcs/6.png');
+            transform: scaleX(-1);
+        }
+
+        .vida-container {
+            position: absolute;
+            top: 10px;
+            width: 160px;
+            background: #8b2e2e;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .vida-esquerda {
+            left: 10px;
+        }
+
+        .vida-direita {
+            right: 10px;
+        }
+
+        .barra-vida {
+            background: #5a1c1c;
+            height: 14px;
+            width: 100%;
+            border-radius: 4px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .preenchimento-vida {
+            background: #6de36d;
+            height: 100%;
+            width: 100%;
+        }
+
+        .botao-pausar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #a0522d;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .rodape {
+            background: #3a2f2f;
+            padding: 16px;
+            color: white;
+            text-align: center;
+        }

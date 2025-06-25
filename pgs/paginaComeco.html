@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Áreas</title>
+    <link rel="stylesheet" href="/pgs/css/mapa.css">
+</head>
+
+<body>
+    <div class="topo">
+        <span>🪙 156</span>
+        <span>⭐ 43333</span>
+        <div class="icones">
+            <img src="imgs/ferro.png" alt="ferro">
+            <img src="imgs/magia.png" alt="magia">
+            <img src="imgs/mochila.png" alt="mochila">
+            <img src="imgs/mapa.png" alt="mapa">
+        </div>
+    </div>
+
+    <div class="mapa">
+        <img src="/imgs/mapas/1.png" alt="Vila" class="vila" style="top: 20%; left: 20%;">
+        <img src="/imgs/mapas/2.png" alt="Vila" class="vila" style="top: 60%; left: 25%;">
+        <img src="/imgs/mapas/3.png" alt="Vila" class="vila" style="top: 30%; left: 65%;">
+        <img src="/imgs/mapas/4.png" alt="Vila" class="vila" style="top: 65%; left: 70%;">
+
+        
+    </div>
+    <!-- Modal oculto inicialmente -->
+<div class="modal" id="modal">
+  <div class="modal-conteudo">
+    <h2 id="modalTitulo">Nome da Vila</h2>
+    <p><strong>População:</strong> <span id="populacao"></span></p>
+    <p><strong>Fama do herói:</strong> <span id="fama"></span></p>
+    <p><strong>Receita diária:</strong> <span id="receita"></span></p>
+    <p><strong>Comerciantes:</strong> <span id="comerciantes"></span></p>
+    <button onclick="fecharModal()">Fechar</button>
+<a href="#" id="botaoComecar" class="comecar">Começar</a>
+  </div>
+</div>
+<script>
+const dadosVilas = [
+  {
+    nome: 'Vila dos Anões',
+    populacao: 200,
+    fama: '10/100',
+    receita: 50,
+    comerciantes: 2,
+    fase: 'FaseA.html'
+  },
+  {
+    nome: 'Castelo',
+    populacao: 300,
+    fama: '0/100',
+    receita: 0,
+    comerciantes: 1,
+    fase: 'FaseCastelo.html'
+  },
+  {
+    nome: 'Rochas de Ferro',
+    populacao: 500,
+    fama: '25/100',
+    receita: 100,
+    comerciantes: 4,
+    fase: 'FaseBuritis.html'
+  },
+  {
+    nome: 'Floresta Mágica',
+    populacao: 150,
+    fama: '5/100',
+    receita: 20,
+    comerciantes: 1,
+    fase: 'FaseFloresta.html'
+  }
+];
+
+const vilas = document.querySelectorAll('.vila');
+
+vilas.forEach((vila, index) => {
+  vila.addEventListener('click', () => {
+    const dados = dadosVilas[index];
+    document.getElementById('modalTitulo').textContent = dados.nome;
+    document.getElementById('populacao').textContent = dados.populacao;
+    document.getElementById('fama').textContent = dados.fama;
+    document.getElementById('receita').textContent = dados.receita;
+    document.getElementById('comerciantes').textContent = dados.comerciantes;
+
+    // Define o link do botão "Começar"
+    document.getElementById('botaoComecar').setAttribute('href', dados.fase);
+
+    // Exibe o modal
+    document.getElementById('modal').style.display = 'flex';
+  });
+});
+
+
+  function fecharModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+</script>
+</body>
+</html>
