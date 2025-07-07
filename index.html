@@ -2,25 +2,108 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Saga do Herói</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Saga do Herói</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Modal fundo */
+    #modalOpcoes {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    /* Conteúdo do modal */
+    .modal-conteudo {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+    }
+    .modal-conteudo h2 {
+      margin-top: 0;
+    }
+    .modal-conteudo button {
+      margin: 10px 5px 0 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .fechar {
+      margin-top: 15px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="tela-inicial">
-        <div class="logo">
-            <img src="imgs/escudo.png" alt="Escudo" class="escudo">
-        </div>
+  <audio id="musica" src="/Musica/Zelda Main Theme Song - hg Hannes-H.mp3" autoplay loop></audio>
 
-        <div class="botoes">
-            <a href="pgs/paginaComeco.html" class="botao vermelho">Novo Jogo</a>
-            <div class="botoes-inferiores">
-                <button class="botao azul">Créditos</button>
-                <button class="botao azul">Opções</button>
-            </div>
-        </div>
+  <div class="tela-inicial">
+    <div class="logo">
+      <img src="imgs/escudo.png" alt="Escudo" class="escudo">
     </div>
+
+    <div class="botoes">
+<a href="carregamento.html?destino=pgs/paginaComeco.html" class="botao vermelho">Novo Jogo</a>
+      <div class="botoes-inferiores">
+        <button class="botao azul">Créditos</button>
+        <button class="botao azul" id="btnOpcoes">Opções</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal das Opções -->
+  <div id="modalOpcoes" class="modal-fundo">
+    <div class="modal-conteudo">
+      <h2>Opções de Música</h2>
+      <button onclick="tirarMusica()">Tirar Música</button>
+      <button onclick="abaixarVolume()">Diminuir Volume</button>
+      <br />
+      <button class="fechar" onclick="fecharModal()">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modalOpcoes');
+    const btnOpcoes = document.getElementById('btnOpcoes');
+    const musica = document.getElementById('musica');
+
+    btnOpcoes.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    function fecharModal() {
+      modal.style.display = 'none';
+    }
+
+    function tirarMusica() {
+      if (!musica.paused) {
+        musica.pause();
+        alert('Música pausada');
+      } else {
+        musica.play();
+        alert('Música retomada');
+      }
+    }
+
+    function abaixarVolume() {
+      if (musica.volume > 0.1) {
+        musica.volume = Math.max(0, musica.volume - 0.1);
+        alert(`Volume diminuído para ${(musica.volume * 100).toFixed(0)}%`);
+      } else {
+        alert('Volume já está muito baixo');
+      }
+    }
+  </script>
+
 </body>
 
 </html>

@@ -10,6 +10,8 @@
 </head>
 
 <body>
+    <!-- <audio id="musica" src="/Musica/Elden Ring Main Theme ｜ EPIC ORCHESTRAL VERSION.mp3" autoplay loop></audio> -->
+
     <div class="tela-jogo">
         <div class="area-batalha">
             <div class="vida-container vida-esquerda">
@@ -17,12 +19,12 @@
                 <div class="barra-vida">
                     <div class="preenchimento-vida" id="barra-vida-jogador" style="width: 100%"></div>
                 </div>
-                <div id="vida-jogador-texto">35 / 35</div>
+                <div id="vida-jogador-texto"></div>
             </div>
 
             <div class="personagem jogador"></div>
 
-            <button class="botao-pausar">Pausar</button>
+            <button class="botao-pausar" onclick="pausarJogo()">Pausar</button>
 
             <div class="personagem inimigo"></div>
 
@@ -31,36 +33,52 @@
                 <div class="barra-vida">
                     <div class="preenchimento-vida" style="width: 100%"></div>
                 </div>
-                <div>11 / 16</div>
+                <div></div>
             </div>
         </div>
 
-        <!-- modal de pausa -->
-        <div id="modal-pausa" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
-                <h2 class="text-xl font-bold mb-4">Jogo Pausado</h2>
-                <p class="mb-6">Clique em continuar para voltar ao jogo.</p>
-                <button onclick="continuarJogo()"
-                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                    Continuar
-                </button>
-            </div>
-        </div>
-        <div class="flex justify-center mt-4">
-            <button onclick="atacar()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                Atacar
-            </button>
-        </div>
-        <div class="w-full bg-gray-700 h-6 relative my-6 cursor-pointer" onclick="verificarAcerto()"
-            id="barra-precisao">
-            <!-- Área de acerto perfeita -->
-            <div class="absolute top-0 h-full bg-green-500" style="left: 45%; width: 10%;"></div>
-            <!-- Indicador de clique -->
-            <div class="absolute top-0 h-full w-1 bg-red-500" id="indicador-clique" style="left: 0%;"></div>
-        </div>
 
 
-        <!-- 
+
+
+    </div>
+    <div class="flex justify-center mt-4">
+        <button onclick="atacar()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+            Atacar
+        </button>
+    </div>
+    <div class="w-full bg-gray-700 h-6 relative my-6 cursor-pointer" onclick="verificarAcerto(event)"
+        id="barra-precisao">
+        <!-- Área vermelha que causa dano -->
+        <div class="absolute top-0 h-full bg-red-600" style="left: 20%; width: 10%;"></div>
+        <!-- Área verde de acerto -->
+        <div class="absolute top-0 h-full bg-green-500" style="left: 45%; width: 10%;"></div>
+        <!-- Indicador de clique -->
+        <div class="absolute top-0 h-full w-1 bg-red-500" id="indicador-clique" style="left: 0%;"></div>
+    </div>
+    <!-- Modal de Pausa -->
+
+    <div id="modal-pausa" class="modal hidden">
+        <div class="modal-conteudo">
+            <h2>Jogo Pausado</h2>
+            <label>
+                <input type="checkbox" id="musica-toggle" checked onchange="alternarMusica()">
+                Música de Fundo
+            </label>
+            <br><br>
+            <button onclick="continuarJogo()">Continuar</button>
+            <button onclick="confirmarVoltar()">Voltar</button>
+        </div>
+    </div>
+
+    <div id="modal-confirmar-voltar" class="modal hidden">
+        <div class="modal-conteudo">
+            <h3>Deseja mesmo voltar ao menu?</h3>
+            <button onclick="voltarAoMenu()">Sim</button>
+            <button onclick="cancelarVoltar()">Não</button>
+        </div>
+    </div>
+    <!-- 
 
         <div class="rodape">
             <div class="text-white mb-2 font-bold">Acertos Consecutivos</div>
@@ -77,15 +95,25 @@
     </div>
     <script>
         let jogoPausado = false;
+        let jogoIntervalo;
+        const audio = document.getElementById("musica");
+
+
+        // Configuração inicial do jogo
         let vidaJogador = 35;
         let vidaInimigo = 35;
         let acertosConsecutivos = 0;
         const totalAcertos = 10;
+        const vidaJogadorMax = 35;
 
         function atualizarVida() {
             const vidaInimigoPorcentagem = (vidaInimigo / 35) * 100;
             document.querySelector(".vida-direita .preenchimento-vida").style.width = vidaInimigoPorcentagem + "%";
             document.querySelector(".vida-direita div:last-child").textContent = `${vidaInimigo} / 35`;
+
+            const vidaJogadorPorcentagem = (vidaJogador / vidaJogadorMax) * 100;
+            document.querySelector(".vida-esquerda .preenchimento-vida").style.width = vidaJogadorPorcentagem + "%";
+            document.querySelector(".vida-esquerda div:last-child").textContent = `${vidaJogador} / ${vidaJogadorMax}`;
         }
 
         function atualizarBarraAcertos() {
@@ -93,18 +121,31 @@
             document.getElementById("barra-acerto").style.width = porcentagem + "%";
             document.querySelector(".rodape .text-sm").textContent = `${acertosConsecutivos} de ${totalAcertos}`;
         }
-
         function atacar() {
             if (jogoPausado || vidaInimigo <= 0) return;
 
             const indicador = document.getElementById("indicador-clique");
-            const left = parseFloat(indicador.style.left); // exemplo: "50%" → 50
+            const left = parseFloat(indicador.style.left); // Ex.: "50%" → 50
             const posicao = left / 100;
 
-            if (posicao >= 0.45 && posicao <= 0.55) {
+            let perdeuVida = false;
+
+            // Checa se está na área vermelha (20% - 30%)
+            if (posicao >= 0.20 && posicao <= 0.30) {
+                vidaJogador -= 5;
+                if (vidaJogador < 0) vidaJogador = 0;
+                alert("Você clicou na área vermelha e perdeu 5 de vida!");
+                perdeuVida = true;
+            }
+
+            // Se ainda estiver vivo, checa se acertou a área verde
+            if (vidaJogador > 0 && posicao >= 0.45 && posicao <= 0.55) {
                 let dano = Math.random() < 0.2 ? 10 : 5;
                 vidaInimigo -= dano;
                 if (vidaInimigo < 0) vidaInimigo = 0;
+
+                // TOCA O SOM DE ACERTO AQUI
+                document.getElementById("som-acerto").play();
 
                 acertosConsecutivos++;
                 atualizarVida();
@@ -113,10 +154,17 @@
                 alert(dano === 10 ? "Acerto Crítico!" : "Acerto Normal!");
 
                 if (vidaInimigo <= 0) alert("Inimigo derrotado!");
-            } else {
+            } else if (!perdeuVida) {
                 acertosConsecutivos = 0;
                 atualizarBarraAcertos();
                 alert("Errou o tempo!");
+            }
+
+            atualizarVida();
+
+            if (vidaJogador <= 0) {
+                jogoPausado = true;
+                alert("Você foi derrotado!");
             }
         }
 
@@ -132,17 +180,65 @@
             indicador.style.left = `${(posicao * 100).toFixed(2)}%`;
         }, 10);
 
+        // function novoInimigo() {
+        //     vidaInimigo = 30; // ou outro valor que queira
+        //     acertosConsecutivos = 0;
+        //     atualizarVida();
+        //     atualizarBarraAcertos();
+        //     alert("Um novo inimigo apareceu!");
+        // }
+        // pausar o jogo logica
         function pausarJogo() {
             jogoPausado = true;
             document.getElementById("modal-pausa").classList.remove("hidden");
         }
 
+        function confirmarVoltar() {
+            document.getElementById("modal-confirmar-voltar").classList.remove("hidden");
+        }
+
+        function cancelarVoltar() {
+            document.getElementById("modal-confirmar-voltar").classList.add("hidden");
+        }
+
+        function voltarAoMenu() {
+            window.location.href = "paginaComeco.html";
+        }
+        // Continuar o jogo após pausa
         function continuarJogo() {
             jogoPausado = false;
             document.getElementById("modal-pausa").classList.add("hidden");
+
+            // Se música estiver habilitada, retomar
+            if (document.getElementById("musica-toggle").checked) {
+                audio.play().catch(() => {
+                    console.log("Impossível retomar áudio automaticamente.");
+                });
+            }
         }
+        function iniciarMusica() {
+            const musicaLigada = document.getElementById("musica-toggle").checked;
+            if (musicaLigada) {
+                audio.play().catch(() => {
+                    console.log("Autoplay bloqueado até nova interação.");
+                });
+            }
+        }
+        function alternarMusica() {
+            const musicaLigada = document.getElementById("musica-toggle").checked;
+            if (musicaLigada) {
+                audio.play().catch(() => {
+                    console.log("Navegador bloqueou autoplay.");
+                });
+            } else {
+                audio.pause();
+            }
+        }
+        window.onload = iniciarJogo;
+
     </script>
-    <script src="js/pausar.js"></script>
+    <script src="js/pausar"></script>
+    <audio id="som-acerto" src="/Musica/corte-de-espada.mp3"></audio>
 </body>
 
 </html>

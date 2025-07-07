@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa Investimento</title>
+    <link rel="stylesheet" href="/pgs/css/mapa.css">
+</head>
+
+<body>
+    <div class="topo">
+        <span>🪙 0</span>
+        <span>⭐ 0</span>
+        <div class="icones">
+            <img src="imgs/ferro.png" alt="ferro">
+            <img src="imgs/magia.png" alt="magia">
+            <img src="imgs/mochila.png" alt="mochila">
+            <img src="imgs/mapa.png" alt="mapa">
+        </div>
+    </div>
+      
+    <div class="imagem-centralizada">
+        <img id="imagem" src="/imgs/investir.png" alt="Imagem castelo" />
+         
+        <div class="container-informacoes-atuais-cidade">
+        <h2>Informações da Cidade</h2>
+        <p><strong>População:</strong> <span id="populacao">    200</span></p>
+        <p><strong>Fama do herói:</strong> <span id="fama">10/100</span></p>
+        <p><strong>Receita diária:</strong> <span id="receita"> 50</span></p>
+    
+        <div class="botoes">
+            
+            <button onclick="investir()" class="btn_investir">Investir</button>
+        </div>
+        <div id="nivel">Nível: 1</div>
+            </div>
+    </div>
+
+    <!-- Modal oculto inicialmente -->
+    <div class="modal" id="modal">
+        <div class="modal-conteudo">
+            <h2 id="modalTitulo">Nome da Vila</h2>
+            <p><strong>População:</strong> <span id="populacao"></span></p>
+            <p><strong>Fama do herói:</strong> <span id="fama"></span></p>
+            <p><strong>Receita diária:</strong> <span id="receita"></span></p>
+            <p><strong>Comerciantes:</strong> <span id="comerciantes"></span></p>
+            <button onclick="fecharModal()">Fechar</button>
+            <a href="#" id="botaoComecar" class="comecar">Começar</a>
+        </div>
+    </div>
+
+
+    <footer class="rodape">
+        <button id="anterior" onclick="irParaAnterior()">⬅ Anterior</button>
+        <span id="pagina-atual">Página </span>
+        <button id="proximo" onclick="irParaProximo()">Próximo ➡</button>
+    </footer>
+    <script src="js/paginasCarrossel.js"></script>
+    <script>
+        const img = document.getElementById('imagem');
+        const nivelTexto = document.getElementById('nivel');
+
+        let nivel = 1;
+
+        const imagens = {
+            1: 'imgs/investir.png',
+            2: 'imgs/nivel3.png',
+            3: 'imgs/nivel3.png'
+        };
+
+     function atualizarImagem() {
+  console.log("Carregando imagem: ", imagens[nivel]); // Debug
+  img.style.opacity = 0;
+  setTimeout(() => {
+    img.src = imagens[nivel];
+    img.style.opacity = 1;
+    atualizarNivel();
+  }, 300);
+}
+
+
+        function atualizarNivel() {
+            nivelTexto.textContent = `Nível: ${nivel}`;
+        }
+
+        function investir() {
+            if (nivel < 3) {
+                nivel++;
+                atualizarImagem();
+            } else {
+                alert('Você já atingiu o nível máximo!');
+            }
+        }
+
+        // function resetar() {
+        //     nivel = 1;
+        //     atualizarImagem();
+        // }
+    </script>
+</body>
+
+</html>

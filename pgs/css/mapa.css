@@ -110,3 +110,78 @@ body {
 .modal-conteudo button:hover {
   opacity: 0.9;
 }
+
+/* rodape carrossel */
+.rodape {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #222;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.rodape button {
+  background: #555;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.rodape button:hover {
+  background: #777;
+}
+
+/* investir pagina */
+.imagem-centralizada {
+  display: flex;
+  justify-content: center; /* centraliza horizontal */
+  align-items: center;    /* centraliza vertical */
+  height: 80vh;           /* altura da div - quase toda a tela */
+}
+
+.imagem-centralizada img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;    /* para manter proporção */
+}
+  .botoes {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+  }
+  button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #nivel {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .btn_investir {
+    background-color: #126c27;
+    color: white;
+    border: solid white 1px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: #474847 0px 0px 10px;
+  }
+
+  .container-informacoes-atuais-cidade{
+    background-color: #f9e4bc;
+    border: 3px solid #a8773b;
+    border-radius: 10px;
+    padding: 15px 30px;
+    width: 260px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    margin-top: 20px;
+  }

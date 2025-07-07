@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Carregando...</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: #fff;
+      font-size: 2rem;
+      background-image: url('/imgs/carregamento.gif');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  Carregando...
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const destino = params.get('destino');
+
+    if (destino) {
+      setTimeout(() => {
+        window.location.href = destino;
+      }, 3000);
+    } else {
+      document.body.textContent = "Nenhuma página destino informada!";
+    }
+  </script>
+</body>
+
+</html>
